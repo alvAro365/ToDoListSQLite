@@ -23,7 +23,7 @@ public final class ToDoListDatabaseContract {
         // CREATE TABLE todolist (todolistID INTEGER PRIMARY KEY, todolistTitle TEXT, todolistDate TEXT, todolistCategoryID INT)
         public static final String SQL_CREATE_TABLE =
                 "CREATE TABLE " + TABLE_NAME + " (" +
-                        COLUMN_TODOLIST_ID + " INTEGER PRIMARY KEY, " +
+                        _ID + " INTEGER PRIMARY KEY, " +
                         COLUMN_TODOLIST_TITLE + " TEXT, " +
                         COLUMN_TODOLIST_DATE + " TEXT, " +
                         COLUMN_TODOLIST_CATEGORY_ID + " INT" +
@@ -41,7 +41,7 @@ public final class ToDoListDatabaseContract {
         // CREATE TABLE category (COLUMN_CATEGORY_ID INTEGER PRIMARY KEY, COLUMN_CATEGORY_NAME TEXT);
         public static final String SQL_CREATE_TABLE =
                 "CREATE TABLE " + TABLE_NAME + " (" +
-                        COLUMN_CATEGORY_ID + " INTEGER PRIMARY KEY, " +
+                        _ID + " INTEGER PRIMARY KEY, " +
                         COLUMN_CATEGORY_NAME + " TEXT" +
                         ")";
     }

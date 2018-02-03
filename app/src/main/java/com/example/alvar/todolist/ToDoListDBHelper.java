@@ -1,6 +1,7 @@
 package com.example.alvar.todolist;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -15,7 +16,7 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
 
     private static final String LOGTAG = "Todolist";
     private static final String DATABASE_NAME = "todolist.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
 
     public ToDoListDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -26,6 +27,8 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
         db.execSQL(CategoriesInfoEntry.SQL_CREATE_TABLE);
         db.execSQL(ToDoListInfoEntry.SQL_CREATE_TABLE);
         Log.i(LOGTAG, "Tables created");
+
+        db.execSQL("INSERT INTO category (categoryName) VALUES ('Home'), ('Work'), ('School'), ('Sports'), ('Family'), ('Hobbies')");
 
     }
 
@@ -38,5 +41,19 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
             Log.i(LOGTAG, "Database upgraded from " + oldVersion + " to " + newVersion);
 
         }
+    }
+
+
+    public Cursor getAllCategories() {
+
+        SQLiteDatabase db = getReadableDatabase();
+        String[] categoryColumns = {
+                CategoriesInfoEntry.COLUMN_CATEGORY_NAME,
+                CategoriesInfoEntry._ID
+        };
+
+        Cursor cursor = db.query(CategoriesInfoEntry.TABLE_NAME, categoryColumns, null, null, null, null, null);
+        return cursor;
+
     }
 }

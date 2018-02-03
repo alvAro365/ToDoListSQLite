@@ -1,6 +1,7 @@
 package com.example.alvar.todolist;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -10,9 +11,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Spinner;
 
 public class MainActivity extends AppCompatActivity {
-
+    private ToDoListDBHelper toDoListDBHelper;
 
 
 
@@ -20,9 +22,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ToDoListDBHelper toDoListDBHelper = new ToDoListDBHelper(this);
+        toDoListDBHelper = new ToDoListDBHelper(this);
 
-        SQLiteDatabase db = toDoListDBHelper.getReadableDatabase();
+        displayCategoriesSpinner();
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -34,6 +37,14 @@ public class MainActivity extends AppCompatActivity {
                 startCreateToDoActivity();
             }
         });
+    }
+
+    private void displayCategoriesSpinner() {
+        Spinner categoriesSpinner = findViewById(R.id.spinner_categories);
+        Cursor cursor = toDoListDBHelper.getAllCategories();
+        CategoriesCursorAdapter categoriesAdapter = new CategoriesCursorAdapter(this, cursor);
+        categoriesSpinner.setAdapter(categoriesAdapter);
+
     }
 
     private void startCreateToDoActivity() {
