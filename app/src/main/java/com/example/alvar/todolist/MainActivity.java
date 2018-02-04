@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
@@ -52,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 
                 selectedItemId = (int) id;
-                toDoListDBHelper.getToDos(selectedItemId);
+                Cursor categoryCursor = toDoListDBHelper.getToDos(selectedItemId);
+                showToDos(categoryCursor);
 
             }
 
@@ -64,6 +67,15 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    private void showToDos(Cursor categoryCursor) {
+        RecyclerView recyclerView = findViewById(R.id.recyclerview_toDo);
+        LinearLayoutManager toDosLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(toDosLayoutManager);
+        ToDoListAdapter toDoListAdapter = new ToDoListAdapter(this, categoryCursor);
+        recyclerView.setAdapter(toDoListAdapter);
 
     }
 

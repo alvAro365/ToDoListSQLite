@@ -18,7 +18,7 @@
         app:srcCompat="@drawable/playlist_play" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/to_do_text"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="4dp"

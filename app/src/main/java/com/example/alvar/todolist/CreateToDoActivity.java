@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class CreateToDoActivity extends AppCompatActivity {
 
@@ -54,10 +55,15 @@ public class CreateToDoActivity extends AppCompatActivity {
         EditText editDate = findViewById(R.id.editDate);
         String toDo = editToDo.getText().toString();
         String toDoDate = editDate.getText().toString();
-        dbHelper.addToDo(toDo, toDoDate, selectedItemID);
 
-        Intent intent = new Intent(CreateToDoActivity.this, MainActivity.class);
-        startActivity(intent);
+        if (toDo.isEmpty()) {
+            Toast.makeText(this, "Error: No text found!", Toast.LENGTH_SHORT).show();
+        } else {
+            dbHelper.addToDo(toDo, toDoDate, selectedItemID);
+            Intent intent = new Intent(CreateToDoActivity.this, MainActivity.class);
+            startActivity(intent);
+        }
+
 
     }
 }
