@@ -11,10 +11,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.Spinner;
 
 public class MainActivity extends AppCompatActivity {
     private ToDoListDBHelper toDoListDBHelper;
+    private int selectedItemId;
 
 
 
@@ -44,6 +46,24 @@ public class MainActivity extends AppCompatActivity {
         Cursor cursor = toDoListDBHelper.getAllCategories();
         CategoriesCursorAdapter categoriesAdapter = new CategoriesCursorAdapter(this, cursor);
         categoriesSpinner.setAdapter(categoriesAdapter);
+
+        categoriesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+
+                selectedItemId = (int) id;
+                toDoListDBHelper.getToDos(selectedItemId);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+                selectedItemId = 1;
+                toDoListDBHelper.getToDos(selectedItemId);
+
+            }
+        });
 
     }
 

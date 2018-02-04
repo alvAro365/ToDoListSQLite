@@ -1,5 +1,6 @@
 package com.example.alvar.todolist;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -43,7 +44,6 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
         }
     }
 
-
     public Cursor getAllCategories() {
 
         SQLiteDatabase db = getReadableDatabase();
@@ -54,6 +54,39 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
 
         Cursor cursor = db.query(CategoriesInfoEntry.TABLE_NAME, categoryColumns, null, null, null, null, null);
         return cursor;
+    }
+
+    public Cursor getToDos(int categoryId) {
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        // SELECT todolistTitle FROM todolist INNER JOIN category ON todolistCategoryID = category._ID WHERE todolistCategoryId = categoryId;
+
+
+        String query = "SELECT " + ToDoListInfoEntry.COLUMN_TODOLIST_TITLE +
+                " FROM " + ToDoListInfoEntry.TABLE_NAME +
+                " INNER JOIN " + CategoriesInfoEntry.TABLE_NAME +
+                " ON " + ToDoListInfoEntry.COLUMN_TODOLIST_CATEGORY_ID + " = " + CategoriesInfoEntry.TABLE_NAME + "." + CategoriesInfoEntry._ID +
+                " WHERE " + ToDoListInfoEntry.COLUMN_TODOLIST_CATEGORY_ID + " = " + categoryId;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        Log.i(LOGTAG, "Count todos per category: " + cursor.getCount());
+        return cursor;
+
+
+    }
+
+    public void addToDo(String toDoTitle, String toDoDate, int toDoCategoryId) {
+
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(ToDoListInfoEntry.COLUMN_TODOLIST_TITLE, toDoTitle);
+        cv.put(ToDoListInfoEntry.COLUMN_TODOLIST_DATE, toDoDate);
+        cv.put(ToDoListInfoEntry.COLUMN_TODOLIST_CATEGORY_ID, toDoCategoryId);
+        long newRowId = db.insert(ToDoListInfoEntry.TABLE_NAME, null, cv);
+
+        Log.i(LOGTAG, "Todo: " + toDoTitle + " Date: " + toDoDate + " Category: " + toDoCategoryId + " Added to row " + newRowId);
 
     }
 }
