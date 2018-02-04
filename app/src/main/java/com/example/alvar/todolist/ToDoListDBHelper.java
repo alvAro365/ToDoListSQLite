@@ -16,7 +16,7 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
 
     private static final String LOGTAG = "Todolist";
     private static final String DATABASE_NAME = "todolist.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     public ToDoListDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

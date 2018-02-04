@@ -14,7 +14,7 @@ public final class ToDoListDatabaseContract {
     public static final class ToDoListInfoEntry implements BaseColumns {
 
         public static final String TABLE_NAME = "todolist";
-        public static final String COLUMN_TODOLIST_ID = "todolistId";
+        public static final String _ID = BaseColumns._ID;
         public static final String COLUMN_TODOLIST_TITLE = "todolistTitle";
         public static final String COLUMN_TODOLIST_DATE = "todolistDate";
         public static final String COLUMN_TODOLIST_CATEGORY_ID = "todolistCategoryId";
@@ -26,14 +26,16 @@ public final class ToDoListDatabaseContract {
                         _ID + " INTEGER PRIMARY KEY, " +
                         COLUMN_TODOLIST_TITLE + " TEXT, " +
                         COLUMN_TODOLIST_DATE + " TEXT, " +
-                        COLUMN_TODOLIST_CATEGORY_ID + " INT" +
+                        COLUMN_TODOLIST_CATEGORY_ID + " INTEGER, " +
+                        " FOREIGN KEY(" + ToDoListInfoEntry.COLUMN_TODOLIST_CATEGORY_ID + ") REFERENCES " + CategoriesInfoEntry.TABLE_NAME +
+                        "(" + CategoriesInfoEntry._ID + ")" +
                         ")";
     }
 
     public static final class CategoriesInfoEntry implements BaseColumns {
         //Category table
         public static final String TABLE_NAME = "category";
-        public static final String COLUMN_CATEGORY_ID = "categoryId";
+        public static final String _ID = BaseColumns._ID;
         public static final String COLUMN_CATEGORY_NAME = "categoryName";
         public static final String SQL_DELETE_TABLE = "DROP TABLE IF EXISTS ";
 
