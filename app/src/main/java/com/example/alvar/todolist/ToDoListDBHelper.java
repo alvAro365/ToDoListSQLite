@@ -46,7 +46,7 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
 
     public Cursor getAllCategories() {
 
-        SQLiteDatabase db = getReadableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         String[] categoryColumns = {
                 CategoriesInfoEntry.COLUMN_CATEGORY_NAME,
                 CategoriesInfoEntry._ID
@@ -58,12 +58,14 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
 
     public Cursor getToDos(int categoryId) {
 
-        SQLiteDatabase db = getReadableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
 
-        // SELECT todolistTitle FROM todolist INNER JOIN category ON todolistCategoryID = category._ID WHERE todolistCategoryId = categoryId;
+        // SELECT todolistTitle, todolistId FROM todolist INNER JOIN category ON todolistCategoryID = category._ID WHERE todolistCategoryId = categoryId;
 
 
-        String query = "SELECT " + ToDoListInfoEntry.COLUMN_TODOLIST_TITLE +
+        String query = "SELECT " + ToDoListInfoEntry.COLUMN_TODOLIST_TITLE + ", " +
+                ToDoListInfoEntry.TABLE_NAME + "." +
+                ToDoListInfoEntry._ID +
                 " FROM " + ToDoListInfoEntry.TABLE_NAME +
                 " INNER JOIN " + CategoriesInfoEntry.TABLE_NAME +
                 " ON " + ToDoListInfoEntry.COLUMN_TODOLIST_CATEGORY_ID + " = " + CategoriesInfoEntry.TABLE_NAME + "." + CategoriesInfoEntry._ID +
@@ -79,7 +81,7 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
 
     public void addToDo(String toDoTitle, String toDoDate, int toDoCategoryId) {
 
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(ToDoListInfoEntry.COLUMN_TODOLIST_TITLE, toDoTitle);
         cv.put(ToDoListInfoEntry.COLUMN_TODOLIST_DATE, toDoDate);
@@ -87,6 +89,25 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
         long newRowId = db.insert(ToDoListInfoEntry.TABLE_NAME, null, cv);
 
         Log.i(LOGTAG, "Todo: " + toDoTitle + " Date: " + toDoDate + " Category: " + toDoCategoryId + " Added to row " + newRowId);
+
+    }
+
+    public void deleteTodo(long id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] selectionArgs = {String.valueOf(id)};
+        String whereClause = ToDoListInfoEntry._ID + " = ?";
+
+        Log.i(LOGTAG, "Deleted positions is: " + String.valueOf(id));
+        db.delete(ToDoListInfoEntry.TABLE_NAME, whereClause, selectionArgs);
+
+    }
+
+    public Cursor getAllToDos() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + ToDoListInfoEntry.TABLE_NAME, null);
+
+        return cursor;
+
 
     }
 }

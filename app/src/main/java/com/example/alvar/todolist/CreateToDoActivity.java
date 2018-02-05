@@ -36,7 +36,6 @@ public class CreateToDoActivity extends AppCompatActivity {
 
                 selectedItemID = (int) id;
 
-
             }
 
             @Override

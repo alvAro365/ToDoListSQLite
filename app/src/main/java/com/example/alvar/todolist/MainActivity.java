@@ -2,23 +2,28 @@ package com.example.alvar.todolist;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private ToDoListDBHelper toDoListDBHelper;
     private int selectedItemId;
+    private RecyclerView recyclerView;
+    private ToDoListAdapter toDoListAdapter;
+    Cursor categoryCursor;
+
 
 
 
@@ -29,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         toDoListDBHelper = new ToDoListDBHelper(this);
 
         displayCategoriesSpinner();
+
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -54,8 +60,9 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 
                 selectedItemId = (int) id;
-                Cursor categoryCursor = toDoListDBHelper.getToDos(selectedItemId);
+                categoryCursor = toDoListDBHelper.getToDos(selectedItemId);
                 showToDos(categoryCursor);
+                setupTouch();
 
             }
 
@@ -70,14 +77,55 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void setupTouch() {
+        setupItemTouchHelper();
+
+    }
+
     private void showToDos(Cursor categoryCursor) {
-        RecyclerView recyclerView = findViewById(R.id.recyclerview_toDo);
+        recyclerView = findViewById(R.id.recyclerview_toDo);
         LinearLayoutManager toDosLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(toDosLayoutManager);
-        ToDoListAdapter toDoListAdapter = new ToDoListAdapter(this, categoryCursor);
+        toDoListAdapter = new ToDoListAdapter(this, categoryCursor);
         recyclerView.setAdapter(toDoListAdapter);
 
     }
+
+    private void setupItemTouchHelper() {
+
+        ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                Toast.makeText(MainActivity.this, "on Move", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                Toast.makeText(MainActivity.this, "on Swiped", Toast.LENGTH_SHORT).show();
+                int position = viewHolder.getAdapterPosition();
+                //categoryCursor.moveToPosition(position);
+                Log.i("Todolist", "Adapter postion is: " + position);
+                categoryCursor.moveToPosition(position);
+                long id =  categoryCursor.getLong(categoryCursor.getColumnIndex(ToDoListDatabaseContract.ToDoListInfoEntry._ID));
+                Log.i("Todolist", "Item id is: " + id);
+                toDoListDBHelper.deleteTodo(id);
+
+        //        toDoListAdapter.notifyItemRemoved(position);
+                categoryCursor = toDoListDBHelper.getToDos(selectedItemId);
+       //         toDoListAdapter.notifyItemRangeChanged(position, categoryCursor.getCount());
+                showToDos(categoryCursor);
+            }
+
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+
+    }
+
+
 
     private void startCreateToDoActivity() {
 
@@ -107,4 +155,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

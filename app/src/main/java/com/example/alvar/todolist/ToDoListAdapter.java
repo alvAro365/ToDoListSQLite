@@ -3,6 +3,7 @@ package com.example.alvar.todolist;
 import android.content.Context;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,23 +19,26 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
 
     private final Context context;
     private final LayoutInflater layoutInflater;
-    private Cursor cursor;
+    private Cursor mCursor;
     private int toDoTitlePos;
+    private int categoryPos;
 
 
-    public ToDoListAdapter(Context context, Cursor cursor) {
+
+    public ToDoListAdapter(Context context, Cursor mCursor) {
         this.context = context;
-        this.cursor = cursor;
+        this.mCursor = mCursor;
         this.layoutInflater = LayoutInflater.from(this.context);
 
         populateColumnPositions();
     }
 
     private void populateColumnPositions() {
-        if (this.cursor == null) {
+        if (this.mCursor == null) {
             return;
         }
-        toDoTitlePos = cursor.getColumnIndex(ToDoListInfoEntry.COLUMN_TODOLIST_TITLE);
+        toDoTitlePos = mCursor.getColumnIndex(ToDoListInfoEntry.COLUMN_TODOLIST_TITLE);
+        categoryPos = mCursor.getColumnIndex(ToDoListInfoEntry.COLUMN_TODOLIST_CATEGORY_ID);
     }
 
     @Override
@@ -45,18 +49,19 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        cursor.moveToPosition(position);
-        String toDo = cursor.getString(toDoTitlePos);
+        mCursor.moveToPosition(position);
+        String toDo = mCursor.getString(toDoTitlePos);
         holder.toDoText.setText(toDo);
 
     }
 
     @Override
     public int getItemCount() {
-        return cursor == null ? 0 : cursor.getCount();
+        return mCursor == null ? 0 : mCursor.getCount();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+
 
         public final TextView toDoText;
 
@@ -65,5 +70,17 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
             super(itemView);
             toDoText = itemView.findViewById(R.id.to_do_text);
         }
+    }
+
+    public void removeItem(int position, int selectedCategoryId) {
+        ToDoListDBHelper toDoListDBHelper = new ToDoListDBHelper(context);
+
+        Cursor cursor = toDoListDBHelper.getAllToDos();
+        cursor.moveToPosition(position);
+        int id =  cursor.getInt(cursor.getColumnIndex(ToDoListInfoEntry._ID));
+        Log.i("Todolist:", "Removeitemid: "+id);
+
+        toDoListDBHelper.deleteTodo(id);
+
     }
 }
