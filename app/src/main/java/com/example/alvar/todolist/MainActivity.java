@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -102,18 +103,14 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                Toast.makeText(MainActivity.this, "on Swiped", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
                 int position = viewHolder.getAdapterPosition();
-                //categoryCursor.moveToPosition(position);
                 Log.i("Todolist", "Adapter postion is: " + position);
                 categoryCursor.moveToPosition(position);
                 long id =  categoryCursor.getLong(categoryCursor.getColumnIndex(ToDoListDatabaseContract.ToDoListInfoEntry._ID));
                 Log.i("Todolist", "Item id is: " + id);
                 toDoListDBHelper.deleteTodo(id);
-
-        //        toDoListAdapter.notifyItemRemoved(position);
                 categoryCursor = toDoListDBHelper.getToDos(selectedItemId);
-       //         toDoListAdapter.notifyItemRangeChanged(position, categoryCursor.getCount());
                 showToDos(categoryCursor);
             }
 
@@ -121,17 +118,11 @@ public class MainActivity extends AppCompatActivity {
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
-
-
     }
-
-
-
     private void startCreateToDoActivity() {
 
         Intent intent = new Intent(MainActivity.this, CreateToDoActivity.class);
         startActivity(intent);
-
     }
 
     @Override

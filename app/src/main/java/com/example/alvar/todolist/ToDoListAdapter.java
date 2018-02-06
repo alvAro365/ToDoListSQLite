@@ -1,6 +1,7 @@
 package com.example.alvar.todolist;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import static com.example.alvar.todolist.ToDoListDatabaseContract.*;
 
@@ -21,9 +23,6 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
     private final LayoutInflater layoutInflater;
     private Cursor mCursor;
     private int toDoTitlePos;
-    private int categoryPos;
-
-
 
     public ToDoListAdapter(Context context, Cursor mCursor) {
         this.context = context;
@@ -38,7 +37,6 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
             return;
         }
         toDoTitlePos = mCursor.getColumnIndex(ToDoListInfoEntry.COLUMN_TODOLIST_TITLE);
-        categoryPos = mCursor.getColumnIndex(ToDoListInfoEntry.COLUMN_TODOLIST_CATEGORY_ID);
     }
 
     @Override
@@ -60,7 +58,7 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
         return mCursor == null ? 0 : mCursor.getCount();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 
         public final TextView toDoText;
@@ -69,18 +67,16 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
         public ViewHolder(View itemView) {
             super(itemView);
             toDoText = itemView.findViewById(R.id.to_do_text);
+            itemView.setOnClickListener(this);
         }
-    }
 
-    public void removeItem(int position, int selectedCategoryId) {
-        ToDoListDBHelper toDoListDBHelper = new ToDoListDBHelper(context);
+        @Override
+        public void onClick(View view) {
 
-        Cursor cursor = toDoListDBHelper.getAllToDos();
-        cursor.moveToPosition(position);
-        int id =  cursor.getInt(cursor.getColumnIndex(ToDoListInfoEntry._ID));
-        Log.i("Todolist:", "Removeitemid: "+id);
-
-        toDoListDBHelper.deleteTodo(id);
-
+            Toast.makeText(context, "Click registered", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(context, EditTodoActivity.class);
+            context.startActivity(intent);
+            
+        }
     }
 }
