@@ -30,6 +30,7 @@ public class CreateToDoActivity extends AppCompatActivity {
         CategoriesCursorAdapter categoriesAdapter = new CategoriesCursorAdapter(this, cursor);
         categoriesSpinner.setAdapter(categoriesAdapter);
         categoriesSpinner.setSelection(getSpinnerPosition());
+
         //Log.i("Todolist", "Spinnerselection received is nr: " + getSpinnerPosition());
 
 

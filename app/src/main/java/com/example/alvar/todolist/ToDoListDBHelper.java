@@ -62,7 +62,6 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
 
         // SELECT todolistTitle, todolistId FROM todolist INNER JOIN category ON todolistCategoryID = category._ID WHERE todolistCategoryId = categoryId;
 
-
         String query = "SELECT " + ToDoListInfoEntry.COLUMN_TODOLIST_TITLE + ", " +
                 ToDoListInfoEntry.TABLE_NAME + "." +
                 ToDoListInfoEntry._ID + ", " +
@@ -77,7 +76,6 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
         //Log.i(LOGTAG, "Count todos per category: " + cursor.getCount());
         return cursor;
 
-
     }
 
     public void addToDo(String toDoTitle, String toDoDate, int toDoCategoryId) {
@@ -90,11 +88,8 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
         long newRowId = db.insert(ToDoListInfoEntry.TABLE_NAME, null, cv);
 
         if (newRowId > 0) {
-            Log.i(LOGTAG, "ADD: TodoTitle: " + toDoTitle + " Category: " + toDoCategoryId + " Added to row " + newRowId);
+            Log.i(LOGTAG, "CREATE: TodoTitle: " + toDoTitle + " Category: " + toDoCategoryId + " Added to row " + newRowId);
         }
-
-
-
     }
 
     public void deleteTodo(long id) {
@@ -107,9 +102,6 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
         if (i > 0) {
             Log.i(LOGTAG, "DELETE: Amount of rows deleted: " + i);
         }
-
-
-
     }
 
     public Cursor getAllToDos() {
@@ -140,8 +132,6 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
         if (i > 0) {
             Log.i(LOGTAG, "UPDATE: Amount of rows updated " + i);
         }
-
-
         return i > 0;
     }
 }

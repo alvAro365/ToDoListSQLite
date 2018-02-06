@@ -61,6 +61,9 @@ public class EditTodoActivity extends AppCompatActivity {
         categoriesSpinner.setAdapter(categoriesCursorAdapter);
         categoriesSpinner.setSelection(getSpinnerSelection());
 
+        // TODO: add change category function
+        categoriesSpinner.setEnabled(false);
+
         categoriesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
 
