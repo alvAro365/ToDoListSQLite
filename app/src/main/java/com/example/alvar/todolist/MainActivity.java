@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 
                 selectedItemId = (int) id;
-                Log.i("Todolist", "Selected spinner is nr: " + selectedItemId);
                 categoryCursor = toDoListDBHelper.getToDos(selectedItemId);
                 showToDos(categoryCursor);
                 setupTouch();
@@ -107,10 +106,8 @@ public class MainActivity extends AppCompatActivity {
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 Toast.makeText(MainActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
                 int position = viewHolder.getAdapterPosition();
-                Log.i("Todolist", "Adapter postion is: " + position);
                 categoryCursor.moveToPosition(position);
                 long id =  categoryCursor.getLong(categoryCursor.getColumnIndex(ToDoListDatabaseContract.ToDoListInfoEntry._ID));
-                Log.i("Todolist", "Item id is: " + id);
                 toDoListDBHelper.deleteTodo(id);
                 categoryCursor = toDoListDBHelper.getToDos(selectedItemId);
                 showToDos(categoryCursor);
@@ -125,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
 
         Intent toCreateTodo = new Intent(MainActivity.this, CreateToDoActivity.class);
         toCreateTodo.putExtra("selectedCategory", selectedItemId);
-        Log.i("Todolist", "Sendt spinner selection is nr: " + selectedItemId);
         startActivity(toCreateTodo);
     }
 

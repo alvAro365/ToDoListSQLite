@@ -35,11 +35,11 @@ public class EditTodoActivity extends AppCompatActivity {
     private void getTodoItem() {
         Intent intent = getIntent();
         itemID = intent.getLongExtra("todo", 0);
-        Log.i("Todolist", "Item with id: " + itemID + " received");
+       // Log.i("Todolist", "Item with id: " + itemID + " received");
         Cursor todoItemCursor = toDoListDBHelper.getTodoById(itemID);
         todoItemCursor.moveToFirst();
         todoItem = todoItemCursor.getString(todoItemCursor.getColumnIndex(ToDoListInfoEntry.COLUMN_TODOLIST_TITLE));
-        Log.i("Todolist", "The item title is: " + todoItem);
+        //Log.i("Todolist", "The item title is: " + todoItem);
 
         setViews(todoItem);
     }
@@ -85,9 +85,8 @@ public class EditTodoActivity extends AppCompatActivity {
     public void onSaveClick(View view) {
         String editedTodo = editTodo.getText().toString();
         if (toDoListDBHelper.updateTodoItem(itemID, editedTodo)) {
-            Toast.makeText(this, "Save edit", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
 
-            Log.i("Todolist", "Update itemId: " + itemID + " new todo: " + editedTodo);
             Intent backToMainActivity = new Intent(this, MainActivity.class);
             backToMainActivity.putExtra("categoryId", getSpinnerSelection());
             backToMainActivity.putExtra("source", "EditTodoActivity");

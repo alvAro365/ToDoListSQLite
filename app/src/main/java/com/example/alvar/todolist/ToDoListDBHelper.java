@@ -74,7 +74,7 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery(query, null);
 
-        Log.i(LOGTAG, "Count todos per category: " + cursor.getCount());
+        //Log.i(LOGTAG, "Count todos per category: " + cursor.getCount());
         return cursor;
 
 
@@ -89,7 +89,11 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
         cv.put(ToDoListInfoEntry.COLUMN_TODOLIST_CATEGORY_ID, toDoCategoryId);
         long newRowId = db.insert(ToDoListInfoEntry.TABLE_NAME, null, cv);
 
-        Log.i(LOGTAG, "Todo: " + toDoTitle + " Date: " + toDoDate + " Category: " + toDoCategoryId + " Added to row " + newRowId);
+        if (newRowId > 0) {
+            Log.i(LOGTAG, "ADD: TodoTitle: " + toDoTitle + " Category: " + toDoCategoryId + " Added to row " + newRowId);
+        }
+
+
 
     }
 
@@ -98,8 +102,13 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
         String[] selectionArgs = {String.valueOf(id)};
         String whereClause = ToDoListInfoEntry._ID + " = ?";
 
-        Log.i(LOGTAG, "Deleted positions is: " + String.valueOf(id));
-        db.delete(ToDoListInfoEntry.TABLE_NAME, whereClause, selectionArgs);
+        long i = db.delete(ToDoListInfoEntry.TABLE_NAME, whereClause, selectionArgs);
+
+        if (i > 0) {
+            Log.i(LOGTAG, "DELETE: Amount of rows deleted: " + i);
+        }
+
+
 
     }
 
@@ -127,6 +136,12 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ToDoListInfoEntry.COLUMN_TODOLIST_TITLE, editedTodo);
         long i = db.update(ToDoListInfoEntry.TABLE_NAME, contentValues, whereClause, whereArgs);
+
+        if (i > 0) {
+            Log.i(LOGTAG, "UPDATE: Amount of rows updated " + i);
+        }
+
+
         return i > 0;
     }
 }
