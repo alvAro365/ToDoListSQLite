@@ -110,4 +110,36 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
 
 
     }
+
+    public Cursor getTodoById(long id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        // SELECT * FROM todolist WHERE todolist._id = id;
+        Cursor cursor = db.rawQuery("SELECT * FROM " + ToDoListInfoEntry.TABLE_NAME + " WHERE " +
+                ToDoListInfoEntry.TABLE_NAME + "." + ToDoListInfoEntry._ID + "=" + id, null);
+
+        return cursor;
+
+    }
+
+    public boolean updateTodoItem(long itemId, String editedTodo) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        /*
+        //UPDATE todolist SET todolistTitle = editedTodo WHERE todolist._id = itemId;
+
+        String updateQuery = "UPDATE " + ToDoListInfoEntry.TABLE_NAME +
+                " SET " + ToDoListInfoEntry.COLUMN_TODOLIST_TITLE + " = " + editedTodo +
+                " WHERE " + ToDoListInfoEntry.TABLE_NAME + "." + ToDoListInfoEntry._ID + " = " + itemId;
+
+        //Cursor cursor = db.rawQuery(updateQuery, null);
+
+        */
+        String[] whereArgs = {String.valueOf(itemId)};
+        String whereClause = ToDoListInfoEntry._ID + " = ?";
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ToDoListInfoEntry.COLUMN_TODOLIST_TITLE, editedTodo);
+
+
+        long i = db.update(ToDoListInfoEntry.TABLE_NAME, contentValues, whereClause, whereArgs);
+        return i > 0;
+    }
 }

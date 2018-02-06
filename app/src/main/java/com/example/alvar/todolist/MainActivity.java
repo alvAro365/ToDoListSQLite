@@ -36,8 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
         displayCategoriesSpinner();
 
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -91,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(toDoListAdapter);
 
     }
+
+
 
     private void setupItemTouchHelper() {
 

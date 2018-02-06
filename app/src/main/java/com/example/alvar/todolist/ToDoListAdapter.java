@@ -1,5 +1,6 @@
 package com.example.alvar.todolist;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -73,10 +74,14 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
         @Override
         public void onClick(View view) {
 
-            Toast.makeText(context, "Click registered", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(context, EditTodoActivity.class);
-            context.startActivity(intent);
-            
+            int position = this.getAdapterPosition();
+            Toast.makeText(context, "Click registered on adapter position: "+ position, Toast.LENGTH_SHORT).show();
+            mCursor.moveToPosition(position);
+            long id = mCursor.getLong(mCursor.getColumnIndex(ToDoListInfoEntry._ID));
+            Intent toEditTodo = new Intent(context, EditTodoActivity.class);
+            toEditTodo.putExtra("todo", id);
+            Log.i("Todolist", "Item with id: " + id + " sent");
+            context.startActivity(toEditTodo);
         }
     }
 }
