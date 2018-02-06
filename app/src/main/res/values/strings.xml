@@ -1,17 +1,12 @@
 <resources>
-    <string name="app_name">ToDoList</string>
+    <string name="app_name">To-do</string>
     <string name="action_settings">Settings</string>
     <string name="Categories">Categories</string>
     <string name="date">Expiry date</string>
     <string name="save">Save</string>
-
-    <string-array name="categories_array">
-        <item>Home</item>
-        <item>Work</item>
-        <item>Family</item>
-        <item>Sports</item>
-        <item>Hobbies</item>
-    </string-array>
-
+    <string name="action_statistics">Amount of To-do\'s</string>
+    <string name="create_todo">Add To-do</string>
+    <string name="edit_todo">Edit To-do</string>
+    <string name="text_amount_of_todos">Amount of To-do\'s:</string>
 
 </resources>

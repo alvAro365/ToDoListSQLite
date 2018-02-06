@@ -19,8 +19,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateToDoActivity" />
-        <activity android:name=".EditTodoActivity"></activity>
+        <activity android:name=".CreateToDoActivity"
+            android:label="@string/create_todo"/>
+        <activity android:name=".EditTodoActivity"
+            android:label="@string/edit_todo"/>
+        <activity android:name=".StatisticsActivity"
+            android:label="@string/action_statistics"></activity>
     </application>
 
 </manifest>

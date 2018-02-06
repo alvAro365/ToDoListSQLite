@@ -9,8 +9,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -140,8 +138,9 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_statistics) {
+            Intent toStatistics = new Intent(this, StatisticsActivity.class);
+            startActivity(toStatistics);
         }
 
         return super.onOptionsItemSelected(item);
@@ -152,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         String source = getIntent().getStringExtra("source");
         if (source != null) {
-            if (source.equals("CreateTodoActivity".toString())) {
+            if (source.equals("CreateTodoActivity")) {
                 categoriesSpinner.setSelection(getIntent().getIntExtra("category", 0));
             } else {
                 categoriesSpinner.setSelection(getIntent().getIntExtra("categoryId", 0));

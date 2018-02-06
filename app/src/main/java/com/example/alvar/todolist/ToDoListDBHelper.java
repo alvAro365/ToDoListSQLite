@@ -78,12 +78,11 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void addToDo(String toDoTitle, String toDoDate, int toDoCategoryId) {
+    public void addToDo(String toDoTitle, int toDoCategoryId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(ToDoListInfoEntry.COLUMN_TODOLIST_TITLE, toDoTitle);
-        cv.put(ToDoListInfoEntry.COLUMN_TODOLIST_DATE, toDoDate);
         cv.put(ToDoListInfoEntry.COLUMN_TODOLIST_CATEGORY_ID, toDoCategoryId);
         long newRowId = db.insert(ToDoListInfoEntry.TABLE_NAME, null, cv);
 

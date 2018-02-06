@@ -10,10 +10,11 @@
     <Spinner
         android:id="@+id/spinner_edit_todo"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,36 +29,23 @@
         android:ems="10"
         android:gravity="top"
         android:inputType="textMultiLine"
-        app:layout_constraintBottom_toTopOf="@+id/edit_date_edit_todo"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner_edit_todo" />
 
-    <EditText
-        android:id="@+id/edit_date_edit_todo"
-        android:layout_width="wrap_content"
-        android:layout_height="43dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:ems="10"
-        android:hint="@string/date"
-        android:inputType="date"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_to_do_edit"
-        tools:text="02/04/2018" />
-
     <Button
         android:id="@+id/button"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:onClick="onSaveClick"
         android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/edit_date_edit_todo"
-        app:layout_constraintTop_toBottomOf="@+id/edit_to_do_edit" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

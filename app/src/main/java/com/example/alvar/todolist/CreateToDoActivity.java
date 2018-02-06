@@ -59,14 +59,12 @@ public class CreateToDoActivity extends AppCompatActivity {
     public void saveToDo(View view) {
         ToDoListDBHelper dbHelper = new ToDoListDBHelper(this);
         EditText editToDo = findViewById(R.id.editToDo);
-        EditText editDate = findViewById(R.id.editDate);
         String toDo = editToDo.getText().toString();
-        String toDoDate = editDate.getText().toString();
 
         if (toDo.isEmpty()) {
             Toast.makeText(this, "Error: No text found!", Toast.LENGTH_SHORT).show();
         } else {
-            dbHelper.addToDo(toDo, toDoDate, selectedItemID);
+            dbHelper.addToDo(toDo, selectedItemID);
             Intent intent = new Intent(CreateToDoActivity.this, MainActivity.class);
             intent.putExtra("category", getSpinnerPosition());
             intent.putExtra("source", "CreateTodoActivity");
