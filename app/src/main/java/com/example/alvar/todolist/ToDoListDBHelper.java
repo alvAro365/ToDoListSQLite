@@ -17,7 +17,7 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
 
     private static final String LOGTAG = "Todolist";
     private static final String DATABASE_NAME = "todolist.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     public ToDoListDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -100,6 +100,8 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
 
         if (i > 0) {
             Log.i(LOGTAG, "DELETE: Amount of rows deleted: " + i);
+        } else {
+            Log.i(LOGTAG, "Error: Delete failed");
         }
     }
 
