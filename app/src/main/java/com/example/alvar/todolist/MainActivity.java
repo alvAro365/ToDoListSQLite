@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private int selectedItemId;
     private RecyclerView recyclerView;
     private ToDoListAdapter toDoListAdapter;
+    private Spinner categoriesSpinner;
     Cursor categoryCursor;
 
 
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void displayCategoriesSpinner() {
-        Spinner categoriesSpinner = findViewById(R.id.spinner_categories);
+        categoriesSpinner = findViewById(R.id.spinner_categories);
         Cursor cursor = toDoListDBHelper.getAllCategories();
         CategoriesCursorAdapter categoriesAdapter = new CategoriesCursorAdapter(this, cursor);
         categoriesSpinner.setAdapter(categoriesAdapter);
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
 
                 selectedItemId = (int) id;
+                Log.i("Todolist", "Selected spinner is nr: " + selectedItemId);
                 categoryCursor = toDoListDBHelper.getToDos(selectedItemId);
                 showToDos(categoryCursor);
                 setupTouch();
@@ -68,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
-                selectedItemId = 1;
+                selectedItemId = 0;
                 toDoListDBHelper.getToDos(selectedItemId);
 
             }
@@ -121,8 +123,10 @@ public class MainActivity extends AppCompatActivity {
     }
     private void startCreateToDoActivity() {
 
-        Intent intent = new Intent(MainActivity.this, CreateToDoActivity.class);
-        startActivity(intent);
+        Intent toCreateTodo = new Intent(MainActivity.this, CreateToDoActivity.class);
+        toCreateTodo.putExtra("selectedCategory", selectedItemId);
+        Log.i("Todolist", "Sendt spinner selection is nr: " + selectedItemId);
+        startActivity(toCreateTodo);
     }
 
     @Override
@@ -147,5 +151,17 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String source = getIntent().getStringExtra("source");
+        if (source != null) {
+            if (source.equals("CreateTodoActivity".toString())) {
+                categoriesSpinner.setSelection(getIntent().getIntExtra("category", 0));
+            } else {
+                categoriesSpinner.setSelection(getIntent().getIntExtra("categoryId", 0));
+            }
+        }
 
+    }
 }

@@ -59,6 +59,7 @@ public class EditTodoActivity extends AppCompatActivity {
         Cursor categoriesCursor = toDoListDBHelper.getAllCategories();
         CategoriesCursorAdapter categoriesCursorAdapter = new CategoriesCursorAdapter(this, categoriesCursor);
         categoriesSpinner.setAdapter(categoriesCursorAdapter);
+        categoriesSpinner.setSelection(getSpinnerSelection());
 
         categoriesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -77,6 +78,10 @@ public class EditTodoActivity extends AppCompatActivity {
         });
     }
 
+    private int getSpinnerSelection() {
+        return getIntent().getIntExtra("categoryId", 0) -1;
+    }
+
     public void onSaveClick(View view) {
         String editedTodo = editTodo.getText().toString();
         if (toDoListDBHelper.updateTodoItem(itemID, editedTodo)) {
@@ -84,6 +89,8 @@ public class EditTodoActivity extends AppCompatActivity {
 
             Log.i("Todolist", "Update itemId: " + itemID + " new todo: " + editedTodo);
             Intent backToMainActivity = new Intent(this, MainActivity.class);
+            backToMainActivity.putExtra("categoryId", getSpinnerSelection());
+            backToMainActivity.putExtra("source", "EditTodoActivity");
             backToMainActivity.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             backToMainActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             backToMainActivity.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);

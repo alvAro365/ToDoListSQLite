@@ -78,8 +78,12 @@ public class ToDoListAdapter extends RecyclerView.Adapter<ToDoListAdapter.ViewHo
             Toast.makeText(context, "Click registered on adapter position: "+ position, Toast.LENGTH_SHORT).show();
             mCursor.moveToPosition(position);
             long id = mCursor.getLong(mCursor.getColumnIndex(ToDoListInfoEntry._ID));
+            int categoryId = mCursor.getInt(mCursor.getColumnIndex(ToDoListInfoEntry.COLUMN_TODOLIST_CATEGORY_ID));
+            Log.i("Todolist", "Clicked item has a following category ID: " + categoryId);
             Intent toEditTodo = new Intent(context, EditTodoActivity.class);
+            toEditTodo.putExtra("categoryId", categoryId);
             toEditTodo.putExtra("todo", id);
+
             Log.i("Todolist", "Item with id: " + id + " sent");
             context.startActivity(toEditTodo);
         }

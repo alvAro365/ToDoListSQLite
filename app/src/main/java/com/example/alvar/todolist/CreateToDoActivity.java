@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -22,13 +23,15 @@ public class CreateToDoActivity extends AppCompatActivity {
         displayCategoriesSpinner();
     }
 
-
     private void displayCategoriesSpinner() {
         Spinner categoriesSpinner = findViewById(R.id.spinner_categories);
         ToDoListDBHelper toDoListDBHelper = new ToDoListDBHelper(this);
         final Cursor cursor = toDoListDBHelper.getAllCategories();
         CategoriesCursorAdapter categoriesAdapter = new CategoriesCursorAdapter(this, cursor);
         categoriesSpinner.setAdapter(categoriesAdapter);
+        categoriesSpinner.setSelection(getSpinnerPosition());
+        Log.i("Todolist", "Spinnerselection received is nr: " + getSpinnerPosition());
+
 
         categoriesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -48,6 +51,10 @@ public class CreateToDoActivity extends AppCompatActivity {
 
     }
 
+    private int getSpinnerPosition() {
+        return getIntent().getIntExtra("selectedCategory", 0) - 1;
+    }
+
     public void saveToDo(View view) {
         ToDoListDBHelper dbHelper = new ToDoListDBHelper(this);
         EditText editToDo = findViewById(R.id.editToDo);
@@ -60,9 +67,9 @@ public class CreateToDoActivity extends AppCompatActivity {
         } else {
             dbHelper.addToDo(toDo, toDoDate, selectedItemID);
             Intent intent = new Intent(CreateToDoActivity.this, MainActivity.class);
+            intent.putExtra("category", getSpinnerPosition());
+            intent.putExtra("source", "CreateTodoActivity");
             startActivity(intent);
         }
-
-
     }
 }
