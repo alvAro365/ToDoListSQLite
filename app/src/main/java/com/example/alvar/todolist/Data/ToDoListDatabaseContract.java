@@ -1,4 +1,4 @@
-package com.example.alvar.todolist;
+package com.example.alvar.todolist.Data;
 
 import android.provider.BaseColumns;
 

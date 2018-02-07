@@ -1,16 +1,18 @@
-package com.example.alvar.todolist;
+package com.example.alvar.todolist.Activities;
 
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.example.alvar.todolist.Adapters.CategoriesCursorAdapter;
+import com.example.alvar.todolist.Data.ToDoListDBHelper;
+import com.example.alvar.todolist.R;
 
 public class CreateToDoActivity extends AppCompatActivity {
 

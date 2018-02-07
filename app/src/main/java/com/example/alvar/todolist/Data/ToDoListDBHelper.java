@@ -1,4 +1,4 @@
-package com.example.alvar.todolist;
+package com.example.alvar.todolist.Data;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import static com.example.alvar.todolist.ToDoListDatabaseContract.*;
+import static com.example.alvar.todolist.Data.ToDoListDatabaseContract.*;
 
 /**
  * Created by Alvar on 03/02/2018.
@@ -17,7 +17,7 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
 
     private static final String LOGTAG = "Todolist";
     private static final String DATABASE_NAME = "todolist.db";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 8;
 
     public ToDoListDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -31,7 +31,15 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
         Log.i(LOGTAG, "Tables created");
 
         db.execSQL("INSERT INTO category (categoryName) VALUES ('Home'), ('Work'), ('School'), ('Sports'), ('Family'), ('Hobbies')");
-        db.execSQL("INSERT INTO users (userName) VALUES ('Alvar'),('Pernilla'),('Noah')");
+        db.execSQL("INSERT INTO users (userName) VALUES ('Alvar'),('Pernilla')");
+        db.execSQL("INSERT INTO todolist (todolistTitle, todolistCategoryId, userId) VALUES " +
+                "('Handla mat', 1, 1)," +
+                "('Städa', 1, 2)," +
+                "('Köpa ny tv', 1, 1)," +
+                "('Lämna inn labb 2', 3, 1)," +
+                "('Hämta Noah', 4, 2)," +
+                "('Spela schack', 5, 1)," +
+                "('Hitta studentjobb', 2, 1)");
 
     }
 
@@ -59,6 +67,7 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
+    //Get todos by category
     public Cursor getToDos(int categoryId) {
 
         SQLiteDatabase db = this.getReadableDatabase();

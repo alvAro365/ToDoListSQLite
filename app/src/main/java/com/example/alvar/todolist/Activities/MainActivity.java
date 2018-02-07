@@ -1,12 +1,10 @@
-package com.example.alvar.todolist;
+package com.example.alvar.todolist.Activities;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -15,14 +13,18 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ActionMenuView;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.alvar.todolist.Adapters.CategoriesCursorAdapter;
+import com.example.alvar.todolist.Adapters.ToDoListAdapter;
+import com.example.alvar.todolist.Data.ToDoListDBHelper;
+import com.example.alvar.todolist.R;
+
 import java.util.ArrayList;
 
-import static com.example.alvar.todolist.ToDoListDatabaseContract.*;
+import static com.example.alvar.todolist.Data.ToDoListDatabaseContract.*;
 
 public class MainActivity extends AppCompatActivity {
     private ToDoListDBHelper toDoListDBHelper;
@@ -91,8 +93,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(toDoListAdapter);
 
     }
-
-
 
     private void setupItemTouchHelper() {
 
@@ -168,11 +168,9 @@ public class MainActivity extends AppCompatActivity {
         } else {
             getSupportActionBar().setTitle(item.getTitle()+"'s To-Do");
         }
-        
+
         return super.onOptionsItemSelected(item);
     }
-
-
 
     @Override
     protected void onResume() {

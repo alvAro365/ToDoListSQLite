@@ -1,9 +1,13 @@
-package com.example.alvar.todolist;
+package com.example.alvar.todolist.Activities;
 
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
+
+import com.example.alvar.todolist.Adapters.StatisticsCursorAdapter;
+import com.example.alvar.todolist.Data.ToDoListDBHelper;
+import com.example.alvar.todolist.R;
 
 public class StatisticsActivity extends AppCompatActivity {
 
@@ -11,7 +15,6 @@ public class StatisticsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistic);
-
         showStatistics();
     }
 

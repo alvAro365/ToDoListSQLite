@@ -1,18 +1,18 @@
-package com.example.alvar.todolist;
+package com.example.alvar.todolist.Adapters;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import static com.example.alvar.todolist.ToDoListDatabaseContract.*;
+import com.example.alvar.todolist.Activities.EditTodoActivity;
+import com.example.alvar.todolist.R;
+
+import static com.example.alvar.todolist.Data.ToDoListDatabaseContract.*;
 
 /**
  * Created by Alvar on 04/02/2018.

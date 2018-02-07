@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -19,11 +19,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateToDoActivity"
+        <activity android:name=".Activities.CreateToDoActivity"
             android:label="@string/create_todo"/>
-        <activity android:name=".EditTodoActivity"
+        <activity android:name=".Activities.EditTodoActivity"
             android:label="@string/edit_todo"/>
-        <activity android:name=".StatisticsActivity"
+        <activity android:name=".Activities.StatisticsActivity"
             android:label="@string/action_statistics"></activity>
     </application>
 

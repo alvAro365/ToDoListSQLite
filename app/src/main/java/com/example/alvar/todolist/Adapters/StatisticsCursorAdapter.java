@@ -1,4 +1,4 @@
-package com.example.alvar.todolist;
+package com.example.alvar.todolist.Adapters;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -7,6 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
+
+import com.example.alvar.todolist.Data.ToDoListDBHelper;
+import com.example.alvar.todolist.Data.ToDoListDatabaseContract;
+import com.example.alvar.todolist.R;
 
 /**
  * Created by Alvar on 06/02/2018.
