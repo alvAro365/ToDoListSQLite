@@ -17,7 +17,7 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
 
     private static final String LOGTAG = "Todolist";
     private static final String DATABASE_NAME = "todolist.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     public ToDoListDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -27,9 +27,11 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CategoriesInfoEntry.SQL_CREATE_TABLE);
         db.execSQL(ToDoListInfoEntry.SQL_CREATE_TABLE);
+        db.execSQL(UserInfoEntry.SQL_CREATE_TABLE);
         Log.i(LOGTAG, "Tables created");
 
         db.execSQL("INSERT INTO category (categoryName) VALUES ('Home'), ('Work'), ('School'), ('Sports'), ('Family'), ('Hobbies')");
+        db.execSQL("INSERT INTO users (userName) VALUES ('Alvar'),('Pernilla'),('Noah')");
 
     }
 
@@ -38,6 +40,7 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
         if (oldVersion < newVersion) {
             db.execSQL(CategoriesInfoEntry.SQL_DELETE_TABLE + CategoriesInfoEntry.TABLE_NAME);
             db.execSQL(ToDoListInfoEntry.SQL_DELETE_TABLE + ToDoListInfoEntry.TABLE_NAME);
+            db.execSQL(UserInfoEntry.SQL_DELETE_TABLE + UserInfoEntry.TABLE_NAME);
             onCreate(db);
             Log.i(LOGTAG, "Database upgraded from " + oldVersion + " to " + newVersion);
 
@@ -134,5 +137,11 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
             Log.i(LOGTAG, "UPDATE: Amount of rows updated " + i);
         }
         return i > 0;
+    }
+
+    public Cursor getAllUsers() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor userCursor = db.rawQuery("SELECT * FROM " + UserInfoEntry.TABLE_NAME, null);
+        return userCursor;
     }
 }

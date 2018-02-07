@@ -8,5 +8,8 @@
     <string name="create_todo">Add To-do</string>
     <string name="edit_todo">Edit To-do</string>
     <string name="text_amount_of_todos">Amount of To-do\'s:</string>
+    <string name="users">Users</string>
+    <string name="alvar">Alvar</string>
+    <string name="add_user">Add user</string>
 
 </resources>

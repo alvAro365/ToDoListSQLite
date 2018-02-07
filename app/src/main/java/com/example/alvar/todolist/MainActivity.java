@@ -5,16 +5,23 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ActionMenuView;
 import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+
+import static com.example.alvar.todolist.ToDoListDatabaseContract.*;
 
 public class MainActivity extends AppCompatActivity {
     private ToDoListDBHelper toDoListDBHelper;
@@ -23,9 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private ToDoListAdapter toDoListAdapter;
     private Spinner categoriesSpinner;
     Cursor categoryCursor;
-
-
-
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +39,8 @@ public class MainActivity extends AppCompatActivity {
         toDoListDBHelper = new ToDoListDBHelper(this);
 
         displayCategoriesSpinner();
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 startCreateToDoActivity();
             }
         });
+
     }
 
     private void displayCategoriesSpinner() {
@@ -61,15 +65,12 @@ public class MainActivity extends AppCompatActivity {
                 categoryCursor = toDoListDBHelper.getToDos(selectedItemId);
                 showToDos(categoryCursor);
                 setupTouch();
-
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
                 selectedItemId = 0;
                 toDoListDBHelper.getToDos(selectedItemId);
-
             }
         });
 
@@ -105,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Deleted", Toast.LENGTH_SHORT).show();
                 int position = viewHolder.getAdapterPosition();
                 categoryCursor.moveToPosition(position);
-                long id =  categoryCursor.getLong(categoryCursor.getColumnIndex(ToDoListDatabaseContract.ToDoListInfoEntry._ID));
+                long id =  categoryCursor.getLong(categoryCursor.getColumnIndex(ToDoListInfoEntry._ID));
                 toDoListDBHelper.deleteTodo(id);
                 categoryCursor = toDoListDBHelper.getToDos(selectedItemId);
                 showToDos(categoryCursor);
@@ -127,7 +128,24 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        this.menu = menu;
+        loadUserMenu();
         return true;
+    }
+
+    private void loadUserMenu() {
+        Cursor userCursor = toDoListDBHelper.getAllUsers();
+        String userName;
+        int i = 0;
+        MenuItem menuItem = menu.findItem(R.id.action_user);
+        if (userCursor != null) {
+            while (userCursor.moveToNext()) {
+                i++;
+                userName = userCursor.getString(userCursor.getColumnIndex(UserInfoEntry.COLUMN_USER_NAME));
+                menuItem.getSubMenu().add(Menu.NONE, i, i, userName);
+            }
+            Log.i("Todolist", "Amount of users: " + userCursor.getCount());
+        }
     }
 
     @Override
@@ -141,9 +159,15 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_statistics) {
             Intent toStatistics = new Intent(this, StatisticsActivity.class);
             startActivity(toStatistics);
+        } else if (id == R.id.action_user) {
+            Toast.makeText(this, "User clicked", Toast.LENGTH_SHORT).show();
         }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -157,6 +181,5 @@ public class MainActivity extends AppCompatActivity {
                 categoriesSpinner.setSelection(getIntent().getIntExtra("categoryId", 0));
             }
         }
-
     }
 }
