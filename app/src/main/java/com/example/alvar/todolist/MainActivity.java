@@ -1,5 +1,6 @@
 package com.example.alvar.todolist;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private Spinner categoriesSpinner;
     Cursor categoryCursor;
     private Menu menu;
+    private ArrayList<String> users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,13 +138,14 @@ public class MainActivity extends AppCompatActivity {
     private void loadUserMenu() {
         Cursor userCursor = toDoListDBHelper.getAllUsers();
         String userName;
-        int i = 0;
+        int i = 1;
         MenuItem menuItem = menu.findItem(R.id.action_user);
         if (userCursor != null) {
             while (userCursor.moveToNext()) {
                 i++;
                 userName = userCursor.getString(userCursor.getColumnIndex(UserInfoEntry.COLUMN_USER_NAME));
-                menuItem.getSubMenu().add(Menu.NONE, i, i, userName);
+                MenuItem newMenuItem = menuItem.getSubMenu().add(Menu.NONE, i, i, userName);
+                Log.i("Todolist", "The item id is: "+newMenuItem.getItemId());
             }
             Log.i("Todolist", "Amount of users: " + userCursor.getCount());
         }
@@ -161,14 +164,15 @@ public class MainActivity extends AppCompatActivity {
             startActivity(toStatistics);
         } else if (id == R.id.action_user) {
             Toast.makeText(this, "User clicked", Toast.LENGTH_SHORT).show();
+
+        } else {
+            getSupportActionBar().setTitle(item.getTitle()+"'s To-Do");
         }
+        
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        return super.onPrepareOptionsMenu(menu);
-    }
+
 
     @Override
     protected void onResume() {
