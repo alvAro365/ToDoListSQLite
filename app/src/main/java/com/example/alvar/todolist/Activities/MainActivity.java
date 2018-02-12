@@ -165,7 +165,6 @@ public class MainActivity extends AppCompatActivity {
             //Toast.makeText(this, "User clicked", Toast.LENGTH_SHORT).show();
         } else {
             int todos = toDoListDBHelper.getTodosCount((String)item.getTitle());
-
             Toast.makeText(this, item.getTitle()+ " you have " + todos + " todos!", Toast.LENGTH_SHORT).show();
         }
 

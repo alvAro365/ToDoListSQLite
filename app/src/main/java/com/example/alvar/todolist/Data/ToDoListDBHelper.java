@@ -133,7 +133,7 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
         int amountOfTodos = cursor.getInt(0);
 
-        Log.i(LOGTAG, "Amount of todos: " + amountOfTodos);
+        Log.i(LOGTAG, "READ: Amount of todos: " + amountOfTodos);
         return amountOfTodos;
 
     }
