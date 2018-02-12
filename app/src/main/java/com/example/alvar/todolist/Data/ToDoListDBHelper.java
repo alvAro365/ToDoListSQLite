@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.icu.text.UnicodeSetSpanner;
 import android.util.Log;
 
 import static com.example.alvar.todolist.Data.ToDoListDatabaseContract.*;
@@ -17,7 +18,7 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
 
     private static final String LOGTAG = "Todolist";
     private static final String DATABASE_NAME = "todolist.db";
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 9;
 
     public ToDoListDBHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -90,6 +91,53 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
 
     }
 
+    public Cursor getTodosByUser(int userId) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " + ToDoListInfoEntry.COLUMN_TODOLIST_TITLE + ", " +
+                ToDoListInfoEntry.TABLE_NAME + "." +
+                ToDoListInfoEntry._ID + ", " + UserInfoEntry.TABLE_NAME + "." + UserInfoEntry._ID +
+                " FROM " + ToDoListInfoEntry.TABLE_NAME +
+                " INNER JOIN " + UserInfoEntry.TABLE_NAME +
+                " ON " + ToDoListInfoEntry.COLUMN_TODOLIST_USER_ID +
+                " = " + UserInfoEntry.TABLE_NAME + "." + UserInfoEntry._ID +
+                " WHERE " + ToDoListInfoEntry.COLUMN_TODOLIST_USER_ID + " = " + userId;
+
+        String[] columns = {ToDoListInfoEntry.TABLE_NAME + "." + ToDoListInfoEntry._ID, ToDoListInfoEntry.COLUMN_TODOLIST_TITLE};
+        String selection = ToDoListInfoEntry.COLUMN_TODOLIST_TITLE + " = ? ";
+        String[] selectionArgs = {String.valueOf(userId)};
+        String table = ToDoListInfoEntry.TABLE_NAME + " INNER JOIN " + UserInfoEntry.TABLE_NAME +
+                " ON " + ToDoListInfoEntry.COLUMN_TODOLIST_USER_ID + " = " +
+                UserInfoEntry.TABLE_NAME + "." + UserInfoEntry._ID;
+
+        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor1 = db.query(table, columns, selection, selectionArgs, null, null, null);
+
+        Log.i(LOGTAG, "Cursor: "+ cursor.getCount());
+
+        return cursor;
+
+
+    }
+
+
+    public int getTodosCount(String userName) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT COUNT(*) FROM "+ ToDoListInfoEntry.TABLE_NAME + " INNER JOIN " +
+                UserInfoEntry.TABLE_NAME + " ON " + ToDoListInfoEntry.COLUMN_TODOLIST_USER_ID + " = " +
+                UserInfoEntry.TABLE_NAME + "." + UserInfoEntry._ID + " WHERE " +
+                UserInfoEntry.COLUMN_USER_NAME + " = ?";
+        String[] selectionArgs = {userName};
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+        cursor.moveToFirst();
+        int amountOfTodos = cursor.getInt(0);
+
+        Log.i(LOGTAG, "Amount of todos: " + amountOfTodos);
+        return amountOfTodos;
+
+    }
+
     public void addToDo(String toDoTitle, int toDoCategoryId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -153,4 +201,6 @@ public class ToDoListDBHelper extends SQLiteOpenHelper {
         Cursor userCursor = db.rawQuery("SELECT * FROM " + UserInfoEntry.TABLE_NAME, null);
         return userCursor;
     }
+
+
 }

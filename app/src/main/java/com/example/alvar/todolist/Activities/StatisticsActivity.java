@@ -3,6 +3,7 @@ package com.example.alvar.todolist.Activities;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 
 import com.example.alvar.todolist.Adapters.StatisticsCursorAdapter;

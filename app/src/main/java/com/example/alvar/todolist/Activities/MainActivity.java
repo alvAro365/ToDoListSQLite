@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
     private Spinner categoriesSpinner;
     Cursor categoryCursor;
     private Menu menu;
-    private ArrayList<String> users;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,9 +144,9 @@ public class MainActivity extends AppCompatActivity {
                 i++;
                 userName = userCursor.getString(userCursor.getColumnIndex(UserInfoEntry.COLUMN_USER_NAME));
                 MenuItem newMenuItem = menuItem.getSubMenu().add(Menu.NONE, i, i, userName);
-                Log.i("Todolist", "The item id is: "+newMenuItem.getItemId());
+          //      Log.i("Todolist", "The item id is: "+newMenuItem.getItemId());
             }
-            Log.i("Todolist", "Amount of users: " + userCursor.getCount());
+         //   Log.i("Todolist", "Amount of users: " + userCursor.getCount());
         }
     }
 
@@ -163,10 +162,11 @@ public class MainActivity extends AppCompatActivity {
             Intent toStatistics = new Intent(this, StatisticsActivity.class);
             startActivity(toStatistics);
         } else if (id == R.id.action_user) {
-            Toast.makeText(this, "User clicked", Toast.LENGTH_SHORT).show();
-
+            //Toast.makeText(this, "User clicked", Toast.LENGTH_SHORT).show();
         } else {
-            getSupportActionBar().setTitle(item.getTitle()+"'s To-Do");
+            int todos = toDoListDBHelper.getTodosCount((String)item.getTitle());
+
+            Toast.makeText(this, item.getTitle()+ " you have " + todos + " todos!", Toast.LENGTH_SHORT).show();
         }
 
         return super.onOptionsItemSelected(item);

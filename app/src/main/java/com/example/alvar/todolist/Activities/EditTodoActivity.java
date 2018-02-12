@@ -75,11 +75,9 @@ public class EditTodoActivity extends AppCompatActivity {
                 selectedItem = (int) id;
 
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 selectedItem = 1;
-
             }
         });
     }

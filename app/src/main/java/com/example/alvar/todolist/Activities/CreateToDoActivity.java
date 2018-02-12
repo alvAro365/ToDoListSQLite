@@ -35,7 +35,6 @@ public class CreateToDoActivity extends AppCompatActivity {
 
         //Log.i("Todolist", "Spinnerselection received is nr: " + getSpinnerPosition());
 
-
         categoriesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
@@ -43,7 +42,6 @@ public class CreateToDoActivity extends AppCompatActivity {
                 selectedItemID = (int) id;
 
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
